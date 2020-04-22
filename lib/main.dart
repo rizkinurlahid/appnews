@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:app_news/constant/constantFile.dart';
 import 'package:app_news/mainMenu.dart';
@@ -11,8 +12,11 @@ void main() {
     home: Login(),
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
-        appBarTheme: AppBarTheme(
-            color: Colors.white, iconTheme: IconThemeData(color: Colors.red))),
+      appBarTheme: AppBarTheme(
+        color: Colors.white,
+        iconTheme: IconThemeData(color: Colors.red),
+      ),
+    ),
   ));
 }
 
@@ -27,6 +31,7 @@ class _LoginState extends State<Login> {
   LoginStatus _loginStatus = LoginStatus.notSignIn;
 
   String email, password;
+  int pesanLogin;
 
   final _key = new GlobalKey<FormState>();
 
@@ -46,15 +51,15 @@ class _LoginState extends State<Login> {
     }
   }
 
-  savePref(int value, String username, String email, String id_users) async {
+  savePref(int value, String username, String email, String idUsers) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       preferences.setInt("value", value);
       preferences.setString("username", username);
       preferences.setString("email", email);
-      preferences.setString("id_users", id_users);
+      preferences.setString("id_users", idUsers);
 
-      preferences.commit();
+      // preferences.commit();
     });
   }
 
@@ -69,16 +74,30 @@ class _LoginState extends State<Login> {
     String pesan = data['message'];
     String usernameAPI = data['username'];
     String emailAPI = data['email'];
-    String id_users = data['id_users'];
+    String idUsers = data['id_users'];
     if (value == 1) {
       setState(() {
         _loginStatus = LoginStatus.signIn;
-        savePref(value, usernameAPI, emailAPI, id_users);
+        savePref(value, usernameAPI, emailAPI, idUsers);
       });
 
       print(pesan);
     } else {
       print(pesan);
+      setState(() {
+        pesanLogin = value;
+        timer();
+      });
+    }
+  }
+
+  timer() {
+    if (pesanLogin == 0) {
+      Timer(Duration(seconds: 3), () {
+        setState(() {
+          pesanLogin = 3;
+        });
+      });
     }
   }
 
@@ -93,7 +112,6 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getPref();
   }
@@ -102,99 +120,187 @@ class _LoginState extends State<Login> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       preferences.setInt("value", null);
-      preferences.commit();
+      // preferences.commit();
       _loginStatus = LoginStatus.notSignIn;
     });
   }
 
+  OutlineInputBorder outlineBorder() {
+    return OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Colors.lightGreen[600],
+      ),
+      borderRadius: BorderRadius.circular(25.0),
+    );
+  }
+
+  OutlineInputBorder outlineBorderError() {
+    return OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Colors.red,
+      ),
+      borderRadius: BorderRadius.circular(25.0),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     switch (_loginStatus) {
       case LoginStatus.notSignIn:
         return Scaffold(
-          backgroundColor: Colors.red,
-          body: Form(
-            key: _key,
-            child: Container(
-              margin: EdgeInsets.all(32),
-              padding:
-                  EdgeInsets.only(top: 32, left: 16, right: 16, bottom: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
+          resizeToAvoidBottomPadding: false,
+          body: Stack(
+            children: <Widget>[
+              Container(
+                width: width,
+                height: height,
+                child: Image.asset('images/bg.png',
+                    fit: BoxFit.fill,
+                    colorBlendMode: BlendMode.darken,
+                    color: Colors.black87),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Login",
-                    style: TextStyle(color: Colors.black, fontSize: 24),
-                  ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Text(
-                    "Welcome back\nPlease Login to Your Count",
-                    style: TextStyle(fontSize: 20, color: Colors.grey),
-                  ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  TextFormField(
-                    validator: (e) {
-                      if (e.isEmpty) {
-                        return "Please insert email";
-                      }
-                    },
-                    onSaved: (e) => email = e,
-                    decoration: InputDecoration(labelText: "Email"),
-                  ),
-                  TextFormField(
-                    obscureText: _secureText,
-                    onSaved: (e) => password = e,
-                    decoration: InputDecoration(
-                        labelText: "Password",
-                        suffixIcon: IconButton(
-                          onPressed: showHide,
-                          icon: Icon(_secureText
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                        )),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 16, bottom: 16),
-                    width: MediaQuery.of(context).size.width,
-                    height: 40,
-                    child: RaisedButton(
-                      color: Colors.red,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      onPressed: () {
-                        check();
-                      },
-                      child: Text(
-                        "login",
-                        style: TextStyle(color: Colors.white, letterSpacing: 3),
+              Form(
+                key: _key,
+                child: Container(
+                  margin: EdgeInsets.all(width / 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.lightGreen[600],
+                          border:
+                              Border.all(color: Colors.blueGrey, width: 5.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.pages,
+                            size: 60.0,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Register()));
-                      },
-                      child: Text(
-                        "Create a new account, in Here",
-                        style: TextStyle(color: Colors.blue),
-                        textAlign: TextAlign.center,
+                      Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 15.0),
+                            child: TextFormField(
+                              validator: (e) {
+                                return (e.isEmpty)
+                                    ? "Please Insert Email"
+                                    : null;
+                              },
+                              onSaved: (e) => email = e,
+                              keyboardType: TextInputType.emailAddress,
+                              cursorColor: Colors.lightGreen[600],
+                              style: TextStyle(color: Colors.white70),
+                              decoration: InputDecoration(
+                                labelText: "Email",
+                                labelStyle: TextStyle(color: Colors.white54),
+                                prefixIcon: Icon(
+                                  Icons.alternate_email,
+                                  color: Colors.white,
+                                ),
+                                enabledBorder: outlineBorder(),
+                                focusedBorder: outlineBorder(),
+                                errorBorder: outlineBorderError(),
+                                focusedErrorBorder: outlineBorderError(),
+                              ),
+                            ),
+                          ),
+                          TextFormField(
+                            validator: (p) {
+                              return (p.isEmpty)
+                                  ? "Please Insert Password"
+                                  : null;
+                            },
+                            obscureText: _secureText,
+                            onSaved: (e) => password = e,
+                            cursorColor: Colors.lightGreen[600],
+                            style: TextStyle(color: Colors.white70),
+                            decoration: InputDecoration(
+                              labelText: "Password",
+                              labelStyle: TextStyle(color: Colors.white54),
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: Colors.white,
+                              ),
+                              suffixIcon: IconButton(
+                                onPressed: showHide,
+                                icon: Icon(
+                                  _secureText
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: Colors.lightGreen[600],
+                                ),
+                              ),
+                              enabledBorder: outlineBorder(),
+                              focusedBorder: outlineBorder(),
+                              errorBorder: outlineBorderError(),
+                              focusedErrorBorder: outlineBorderError(),
+                            ),
+                          ),
+                          (pesanLogin == 0)
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Login Denied",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                )
+                              : Container(),
+                        ],
                       ),
-                    ),
-                  )
-                ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Container(
+                          width: width,
+                          height: 50.0,
+                          child: RaisedButton(
+                            color: Colors.lightGreen[600],
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0)),
+                            onPressed: () {
+                              check();
+                            },
+                            child: Text(
+                              "LOGIN",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 17.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "You don't have an account? ",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Register()));
+                            },
+                            child: Text(
+                              "Register",
+                              style: TextStyle(color: Colors.lightGreen[600]),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         );
         break;
