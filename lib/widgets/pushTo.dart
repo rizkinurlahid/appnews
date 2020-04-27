@@ -1,3 +1,4 @@
+import 'package:app_news/constant/color.dart';
 import 'package:flutter/material.dart';
 
 class PushTo extends StatelessWidget {
@@ -27,7 +28,9 @@ class PushTo extends StatelessWidget {
           },
           child: Text(
             text2,
-            style: TextStyle(color: Colors.lightGreen[600]),
+            style: TextStyle(
+              color: ColorApp().accentColor,
+            ),
             textAlign: TextAlign.center,
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:app_news/constant/color.dart';
 import 'package:app_news/providers/register_view_model.dart';
 import 'package:app_news/screens/login.dart';
 import 'package:app_news/widgets/bg.dart';
@@ -110,7 +111,7 @@ class _RegisterState extends State<Register> {
                               model.secureText
                                   ? Icons.visibility_off
                                   : Icons.visibility,
-                              color: Colors.lightGreen[600],
+                              color: ColorApp().accentColor,
                             ),
                           ),
                         ),
@@ -127,7 +128,20 @@ class _RegisterState extends State<Register> {
                     ),
                     DesignButton(
                       press: () => model.check(context),
-                      child: Text("REGISTER"),
+                      child: (model.loading == 1)
+                          ? Container(
+                              width: 25.0,
+                              height: 25.0,
+                              child: CircularProgressIndicator(
+                                valueColor: new AlwaysStoppedAnimation<Color>(
+                                    Colors.white54),
+                              ),
+                            )
+                          : Text(
+                              "REGISTER",
+                              style: TextStyle(
+                                  color: ColorApp().textOrIcon, fontSize: 17.0),
+                            ),
                       width: width,
                     ),
                     // PushToLogin(),

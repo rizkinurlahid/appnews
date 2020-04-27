@@ -1,3 +1,4 @@
+import 'package:app_news/constant/color.dart';
 import 'package:flutter/material.dart';
 
 class DesignButton extends StatelessWidget {
@@ -18,7 +19,7 @@ class DesignButton extends StatelessWidget {
       width: width,
       height: 50.0,
       child: RaisedButton(
-          color: Colors.lightGreen[600],
+          color: ColorApp().accentColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
           onPressed: press,

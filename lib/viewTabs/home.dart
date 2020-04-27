@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app_news/constant/color.dart';
 import 'package:app_news/constant/constantFile.dart';
 import 'package:app_news/constant/newsModel.dart';
 import 'package:flutter/material.dart';
@@ -45,18 +46,17 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _lihatData();
   }
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: RefreshIndicator(
-        onRefresh: () {
-          _lihatData();
-        },
+        onRefresh: () => _lihatData(),
         child: loading
             ? Center(child: CircularProgressIndicator())
             : ListView(
@@ -65,7 +65,7 @@ class _HomeState extends State<Home> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text("Stories",
                         style: TextStyle(
-                            color: Colors.red,
+                            color: ColorApp().accentColor,
                             fontSize: 24,
                             fontWeight: FontWeight.bold)),
                   ),
@@ -80,14 +80,16 @@ class _HomeState extends State<Home> {
                           return InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => NewsDetail(x)));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NewsDetail(x)),
+                              );
                             },
                             child: Stack(
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(16),
                                     child: Image.network(
@@ -95,63 +97,31 @@ class _HomeState extends State<Home> {
                                       fit: BoxFit.fill,
                                       width: 400,
                                       height: 300,
+                                      colorBlendMode: BlendMode.darken,
+                                      color: Colors.black54,
                                     ),
                                   ),
                                 ),
-
                                 Container(
-                                  height: MediaQuery.of(context).size.height,
-                                  width: MediaQuery.of(context).size.width,
+                                  height: height,
+                                  width: width,
                                   alignment: Alignment.bottomRight,
                                   child: Container(
-                                      margin: EdgeInsets.all(16),
-                                      width: 120,
-                                      child: Text(
+                                    width: 250,
+                                    child: ListTile(
+                                      contentPadding:
+                                          EdgeInsets.symmetric(horizontal: 5.0),
+                                      title: Text(
                                         x.title,
+                                        textAlign: TextAlign.right,
                                         style: TextStyle(
-                                            color: Colors.black,
-                                            backgroundColor: Colors.white),
-                                      )),
+                                          color: ColorApp().lightPrimaryColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-
-//                                Container(
-//                                  width: MediaQuery.of(context).size.width,
-//                                  padding: EdgeInsets.all(10),
-//                                  child: Row(
-//                                    crossAxisAlignment: CrossAxisAlignment.start,
-//                                    children: <Widget>[
-//                                      Container(
-//                                        child: ClipRRect(
-//                                          borderRadius: BorderRadius.circular(8),
-//                                          child: Image.network(
-//                                            BaseUrl().insertNews + x.image,
-//                                            width: 150.0,
-//                                            height: 120.0,
-//                                            fit: BoxFit.cover,
-//                                          ),
-//                                        ),
-//                                      ),
-//                                      SizedBox(
-//                                        width: 10,
-//                                      ),
-//                                      Expanded(
-//                                        child: Column(
-//                                          crossAxisAlignment: CrossAxisAlignment.start,
-//                                          children: <Widget>[
-//                                            Text(
-//                                              x.title,
-//                                              style: TextStyle(
-//                                                  fontSize: 18,
-//                                                  fontWeight: FontWeight.bold),
-//                                            ),
-//                                            Text(x.date_news),
-//
-//                                          ],
-//                                        ),
-//                                      ),
-//                                    ],
-//                                  ),
-//                                ),
                               ],
                             ),
                           );
@@ -161,7 +131,7 @@ class _HomeState extends State<Home> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text("Headline",
                         style: TextStyle(
-                            color: Colors.red,
+                            color: ColorApp().accentColor,
                             fontSize: 24,
                             fontWeight: FontWeight.bold)),
                   ),
@@ -172,96 +142,30 @@ class _HomeState extends State<Home> {
                       itemBuilder: (context, i) {
                         final x = list[i];
                         return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => NewsDetail(x)));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => NewsDetail(x)));
+                            },
                             child: Column(
                               children: <Widget>[
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: Image.network(
-                                        BaseUrl().insertNews + x.image,
-                                        width: 150.0,
-                                        height: 120.0,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            x.title,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(x.date_news),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(x.content),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              Flexible(
-                                                flex: 5,
-                                                child: Row(
-                                                  children: <Widget>[
-                                                    Icon(Icons.access_time),
-                                                    SizedBox(
-                                                      width: 4,
-                                                    ),
-                                                    Text("4 hr"),
-                                                    SizedBox(
-                                                      width: 4,
-                                                    ),
-                                                    Text(
-                                                      "| US & Canada",
-                                                      style: TextStyle(
-                                                          color: Colors.red),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 8,
+                                ListTile(
+                                  leading: Image.network(
+                                    BaseUrl().insertNews + x.image,
+                                    width: 100.0,
+                                    height: 100.0,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  title: Text(x.title),
+                                  subtitle: Text(x.date_news),
                                 ),
                                 Divider(
-                                  color: Colors.pink,
-                                  height: 1,
-                                  thickness: 2,
-                                ),
+                                  indent: width / 10,
+                                  endIndent: width / 10,
+                                )
                               ],
-                            ),
-                          ),
-                        );
+                            ));
                       }),
                 ],
               ),
@@ -269,3 +173,87 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+// Container(
+//                             padding: EdgeInsets.all(10),
+//                             child: Column(
+//                               children: <Widget>[
+//                                 Row(
+//                                   crossAxisAlignment: CrossAxisAlignment.start,
+//                                   children: <Widget>[
+//                                     ClipRRect(
+//                                       borderRadius: BorderRadius.circular(8),
+//                                       child: Image.network(
+//                                         BaseUrl().insertNews + x.image,
+//                                         width: 150.0,
+//                                         height: 120.0,
+//                                         fit: BoxFit.cover,
+//                                       ),
+//                                     ),
+//                                     SizedBox(
+//                                       width: 10,
+//                                     ),
+//                                     Expanded(
+//                                       child: Column(
+//                                         crossAxisAlignment:
+//                                             CrossAxisAlignment.start,
+//                                         children: <Widget>[
+//                                           Text(
+//                                             x.title,
+//                                             style: TextStyle(
+//                                                 fontSize: 18,
+//                                                 fontWeight: FontWeight.bold),
+//                                           ),
+//                                           SizedBox(
+//                                             height: 5,
+//                                           ),
+//                                           Text(x.date_news),
+//                                           SizedBox(
+//                                             height: 5,
+//                                           ),
+//                                           Text(x.content),
+//                                           SizedBox(
+//                                             height: 10,
+//                                           ),
+//                                           Row(
+//                                             mainAxisAlignment:
+//                                                 MainAxisAlignment.spaceBetween,
+//                                             children: <Widget>[
+//                                               Flexible(
+//                                                 flex: 5,
+//                                                 child: Row(
+//                                                   children: <Widget>[
+//                                                     Icon(Icons.access_time),
+//                                                     SizedBox(
+//                                                       width: 4,
+//                                                     ),
+//                                                     Text("4 hr"),
+//                                                     SizedBox(
+//                                                       width: 4,
+//                                                     ),
+//                                                     Text(
+//                                                       "| US & Canada",
+//                                                       style: TextStyle(
+//                                                           color: Colors.red),
+//                                                     )
+//                                                   ],
+//                                                 ),
+//                                               ),
+//                                             ],
+//                                           )
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                                 SizedBox(
+//                                   height: 8,
+//                                 ),
+//                                 Divider(
+//                                   color: Colors.pink,
+//                                   height: 1,
+//                                   thickness: 2,
+//                                 ),
+//                               ],
+//                             ),
+//                           ),

@@ -1,3 +1,4 @@
+import 'package:app_news/constant/color.dart';
 import 'package:app_news/providers/login_view_model.dart';
 import 'package:app_news/screens/register.dart';
 import 'package:app_news/widgets/bg.dart';
@@ -108,7 +109,8 @@ class _LoginState extends State<Login> {
                               : Text(
                                   "LOGIN",
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 17.0),
+                                      color: ColorApp().textOrIcon,
+                                      fontSize: 17.0),
                                 ),
                           width: width,
                         )),

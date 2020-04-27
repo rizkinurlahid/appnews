@@ -1,3 +1,4 @@
+import 'package:app_news/constant/color.dart';
 import 'package:flutter/material.dart';
 
 OutlineInputBorder outlineBorder() {
@@ -54,14 +55,14 @@ class TextFieldDesign extends StatelessWidget {
       focusNode: focusNode,
       onFieldSubmitted: onFieldSubmitted,
       obscureText: (obsecureText == null) ? false : obsecureText,
-      cursorColor: Colors.lightGreen[600],
+      cursorColor: ColorApp().accentColor,
       style: TextStyle(color: Colors.white70),
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyle(color: Colors.white54),
         prefixIcon: Icon(
           icon,
-          color: Colors.white,
+          color: ColorApp().textOrIcon,
         ),
         suffixIcon: suffixIcon,
         enabledBorder: outlineBorder(),

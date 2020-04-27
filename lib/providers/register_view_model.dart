@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:app_news/constant/constantFile.dart';
-import 'package:app_news/mainMenu.dart';
+import 'package:app_news/screens/mainMenu.dart';
 import 'package:app_news/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +21,9 @@ class RegisterViewModel extends BaseViewModel {
   bool _secureText = true;
   bool get secureText => _secureText;
 
+  int _loading;
+  get loading => _loading;
+
   final FocusNode _usernameFocus = FocusNode();
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
@@ -35,6 +38,7 @@ class RegisterViewModel extends BaseViewModel {
 
   check(BuildContext context) {
     if (_key.currentState.validate()) {
+      _loading = 1;
       _key.currentState.save();
       save(context);
     }
@@ -52,7 +56,9 @@ class RegisterViewModel extends BaseViewModel {
     String pesan = data['message'];
     if (value == 1) {
       login(context);
+      _loading = 0;
     } else {
+      _loading = 0;
       print(value);
       print(pesan);
 

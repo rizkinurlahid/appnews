@@ -3,7 +3,7 @@ import 'package:app_news/constant/newsModel.dart';
 import 'package:flutter/material.dart';
 
 class NewsDetail extends StatefulWidget {
-  NewsModel newsModel;
+  final NewsModel newsModel;
   NewsDetail(this.newsModel);
 
   @override
@@ -14,13 +14,16 @@ class _NewsDetailState extends State<NewsDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("News"),
+      ),
       body: SingleChildScrollView(
-          padding: EdgeInsets.only(left: 10, top: 10, right: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
+                margin: const EdgeInsets.symmetric(vertical: 5.0),
                 height: 200,
                 width: MediaQuery.of(context).size.width,
                 child: ClipRRect(
@@ -32,9 +35,6 @@ class _NewsDetailState extends State<NewsDetail> {
                     fit: BoxFit.cover,
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 5,
               ),
               Text(
                 widget.newsModel.title,
