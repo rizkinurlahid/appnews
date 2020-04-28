@@ -1,7 +1,7 @@
-import 'package:app_news/constant/color.dart';
-import 'package:app_news/providers/mainMenu_view_model.dart';
-import 'package:app_news/screens/login.dart';
-import 'package:app_news/widgets/titleMainMenu.dart';
+import 'package:app_news/utils/color.dart';
+import 'package:app_news/view_models/mainMenu_view_model.dart';
+import 'package:app_news/views/pages/login.dart';
+import 'package:app_news/views/widgets/titleMainMenu.dart';
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -13,23 +13,24 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
+  final MainMenuViewModel menuViewModel = MainMenuViewModel();
   @override
   void initState() {
     super.initState();
-    MainMenuViewModel().getPref();
-    MainMenuViewModel().pageController;
+    menuViewModel.getPref();
+    menuViewModel.pageController;
   }
 
   @override
   void dispose() {
-    MainMenuViewModel().disposePage;
+    menuViewModel.disposePage;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainMenuViewModel>.reactive(
-        viewModelBuilder: () => MainMenuViewModel(),
+        viewModelBuilder: () => menuViewModel,
         onModelReady: (model) => model.getPref(),
         builder: (context, model, child) {
           return Scaffold(
@@ -45,9 +46,7 @@ class _MainMenuState extends State<MainMenu> {
                       (Route<dynamic> route) => false,
                     );
                   },
-                  icon: Icon(
-                    FontAwesome.sign_out,
-                  ),
+                  icon: Icon(FontAwesome.sign_out),
                   tooltip: 'Sign Out',
                 )
               ],
@@ -82,19 +81,19 @@ class _MainMenuState extends State<MainMenu> {
               },
               items: [
                 FFNavigationBarItem(
-                  iconData: Icons.home,
+                  iconData: FontAwesome.home,
                   label: 'Home',
                 ),
                 FFNavigationBarItem(
-                  iconData: Icons.new_releases,
-                  label: 'News',
+                  iconData: AntDesign.edit,
+                  label: 'Control',
                 ),
                 FFNavigationBarItem(
                   iconData: Icons.category,
                   label: 'Category',
                 ),
                 FFNavigationBarItem(
-                  iconData: Icons.person,
+                  iconData: Ionicons.md_person,
                   label: 'Profile',
                 ),
               ],

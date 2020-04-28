@@ -1,11 +1,11 @@
-import 'package:app_news/constant/color.dart';
-import 'package:app_news/providers/register_view_model.dart';
-import 'package:app_news/screens/login.dart';
-import 'package:app_news/widgets/bg.dart';
-import 'package:app_news/widgets/button.dart';
-import 'package:app_news/widgets/logo.dart';
-import 'package:app_news/widgets/pushTo.dart';
-import 'package:app_news/widgets/textFieldDesign.dart';
+import 'package:app_news/utils/color.dart';
+import 'package:app_news/view_models/register_view_model.dart';
+import 'package:app_news/views/pages/login.dart';
+import 'package:app_news/views/widgets/bg.dart';
+import 'package:app_news/views/widgets/button.dart';
+import 'package:app_news/views/widgets/logo.dart';
+import 'package:app_news/views/widgets/pushTo.dart';
+import 'package:app_news/views/widgets/textFieldDesign.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -13,8 +13,6 @@ class Register extends StatefulWidget {
   @override
   _RegisterState createState() => _RegisterState();
 }
-
-enum LoginStatus { notSignIn, signIn }
 
 class _RegisterState extends State<Register> {
   OutlineInputBorder outlineBorder() {

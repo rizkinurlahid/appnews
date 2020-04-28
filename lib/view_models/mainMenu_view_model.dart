@@ -1,7 +1,7 @@
 import 'package:app_news/viewTabs/category.dart';
-import 'package:app_news/viewTabs/home.dart';
-import 'package:app_news/viewTabs/news.dart';
+import 'package:app_news/views/pages/news.dart';
 import 'package:app_news/viewTabs/profile.dart';
+import 'package:app_news/views/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';

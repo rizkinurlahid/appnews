@@ -52,32 +52,6 @@ class _EditNewsState extends State<EditNews> {
     } else {}
   }
 
-//  submit() async {
-//    final response = await http.post(BaseUrl().editNews, body: {
-//      "title" : title,
-//      "content" : content,
-//      "description" : description,
-//      "id_news" : widget.model.id_news,
-//
-//
-//    }
-//
-//    );
-//
-//    final data = jsonDecode(response.body);
-//    int value = data['value'];
-//    String pesan = data['message'];
-//
-//    if (value == 1) {
-//      setState(() {
-//        widget.reload();
-//        Navigator.pop(context);
-//      });
-//    } else {
-//      print(pesan);
-//    }
-//  }
-
   submit() async {
     //3.3 Edit gambar
     try {

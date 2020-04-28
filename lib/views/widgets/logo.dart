@@ -1,5 +1,6 @@
-import 'package:app_news/constant/color.dart';
+import 'package:app_news/utils/color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class Logo extends StatelessWidget {
   const Logo({
@@ -17,7 +18,7 @@ class Logo extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Icon(
-          Icons.pages,
+          MaterialCommunityIcons.newspaper,
           size: 60.0,
           color: ColorApp().textOrIcon,
         ),

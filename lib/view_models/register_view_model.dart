@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:app_news/constant/constantFile.dart';
-import 'package:app_news/screens/mainMenu.dart';
-import 'package:app_news/screens/register.dart';
+import 'package:app_news/views/pages/mainMenu.dart';
+import 'package:app_news/views/pages/register.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/_base_viewmodels.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterViewModel extends BaseViewModel {
-  LoginStatus _loginStatus = LoginStatus.notSignIn;
-  get loginStatus => _loginStatus;
+  // LoginStatus _loginStatus = LoginStatus.notSignIn;
+  // get loginStatus => _loginStatus;
 
   String username, email, password;
   int pesanRegister;
@@ -90,10 +90,10 @@ class RegisterViewModel extends BaseViewModel {
     String emailAPI = data['email'];
     String idUsers = data['id_users'];
     if (value == 1) {
-      _loginStatus = LoginStatus.signIn;
+      // _loginStatus = LoginStatus.signIn;
       savePref(value, usernameAPI, emailAPI, idUsers);
       print(pesan);
-      print(_loginStatus);
+      // print(_loginStatus);
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => MainMenu()),

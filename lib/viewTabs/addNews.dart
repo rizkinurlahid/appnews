@@ -110,7 +110,7 @@ class _AddNewsState extends State<AddNews> {
     var placeholder = Container(
       width: double.infinity,
       height: 150,
-      child: Image.asset('./images/placeholder.png'),
+      child: Image.asset('images/placeholder.png'),
     );
     return Scaffold(
       appBar: AppBar(),

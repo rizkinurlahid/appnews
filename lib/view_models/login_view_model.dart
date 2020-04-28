@@ -1,16 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:app_news/constant/constantFile.dart';
-import 'package:app_news/screens/login.dart';
-import 'package:app_news/screens/mainMenu.dart';
+import 'package:app_news/views/pages/mainMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
 class LoginViewModel extends BaseViewModel {
-  LoginStatus _loginStatus = LoginStatus.notSignIn;
-  get loginStatus => _loginStatus;
+  // LoginStatus _loginStatus = LoginStatus.notSignIn;
+  // get loginStatus => _loginStatus;
 
   String email, password;
   int pesanLogin;
@@ -65,7 +64,7 @@ class LoginViewModel extends BaseViewModel {
     String emailAPI = data['email'];
     String idUsers = data['id_users'];
     if (value == 1) {
-      _loginStatus = LoginStatus.signIn;
+      // _loginStatus = LoginStatus.signIn;
       savePref(value, usernameAPI, emailAPI, idUsers);
       print(pesan);
       Navigator.pushAndRemoveUntil(
@@ -97,7 +96,7 @@ class LoginViewModel extends BaseViewModel {
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     value = preferences.getInt("value");
-    _loginStatus = value == 1 ? LoginStatus.signIn : LoginStatus.notSignIn;
+    // _loginStatus = value == 1 ? LoginStatus.signIn : LoginStatus.notSignIn;
     notifyListeners();
   }
 
@@ -105,7 +104,7 @@ class LoginViewModel extends BaseViewModel {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setInt("value", 0);
     // preferences.commit();
-    _loginStatus = LoginStatus.notSignIn;
+    // _loginStatus = LoginStatus.notSignIn;
     notifyListeners();
   }
 

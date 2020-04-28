@@ -1,4 +1,4 @@
-import 'package:app_news/constant/color.dart';
+import 'package:app_news/utils/color.dart';
 import 'package:flutter/material.dart';
 
 class TitleMainMenu extends StatelessWidget {
