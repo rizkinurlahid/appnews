@@ -30,6 +30,9 @@ class RegisterViewModel extends BaseViewModel {
   get usernameFocus => _usernameFocus;
   get emailFocus => _emailFocus;
   get passwordFocus => _passwordFocus;
+  get usernameFocusDispose => _usernameFocus.dispose();
+  get emailFocusDispose => _emailFocus.dispose();
+  get passwordFocusDispose => _passwordFocus.dispose();
 
   showHide() {
     _secureText = !_secureText;

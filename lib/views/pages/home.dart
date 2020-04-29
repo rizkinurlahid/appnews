@@ -22,6 +22,7 @@ class _HomeState extends State<Home> {
       onModelReady: (model) => model.lihatData,
       builder: (context, model, child) {
         return Scaffold(
+          backgroundColor: ColorApp().bgColor,
           body: RefreshIndicator(
             onRefresh: () => model.lihatData,
             child: model.loading
@@ -132,7 +133,27 @@ class _HomeState extends State<Home> {
                                         fit: BoxFit.fill,
                                       ),
                                       title: Text(x.title),
-                                      subtitle: Text(x.date_news),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            x.content,
+                                            maxLines: 1,
+                                            softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: ColorApp().secondaryText,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 13.0,
+                                            ),
+                                          ),
+                                          Text(
+                                            x.date_news,
+                                            style: TextStyle(fontSize: 11.0),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     Divider(
                                       indent: width / 10,

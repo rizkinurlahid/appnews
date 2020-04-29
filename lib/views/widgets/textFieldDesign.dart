@@ -1,21 +1,21 @@
 import 'package:app_news/utils/color.dart';
 import 'package:flutter/material.dart';
 
-OutlineInputBorder outlineBorder() {
+OutlineInputBorder outlineBorder(radius) {
   return OutlineInputBorder(
     borderSide: BorderSide(
       color: Colors.lightGreen[600],
     ),
-    borderRadius: BorderRadius.circular(25.0),
+    borderRadius: BorderRadius.circular(radius),
   );
 }
 
-OutlineInputBorder outlineBorderError() {
+OutlineInputBorder outlineBorderError(radius) {
   return OutlineInputBorder(
     borderSide: BorderSide(
       color: Colors.red,
     ),
-    borderRadius: BorderRadius.circular(25.0),
+    borderRadius: BorderRadius.circular(radius),
   );
 }
 
@@ -25,13 +25,20 @@ class TextFieldDesign extends StatelessWidget {
     @required this.validator,
     @required this.onSaved,
     this.keyboardType,
-    this.textInputAction,
-    this.focusNode,
+    @required this.textInputAction,
+    @required this.focusNode,
     this.onFieldSubmitted,
     @required this.labelText,
-    @required this.icon,
+    this.icon,
     this.obsecureText,
     this.suffixIcon,
+    @required this.radius,
+    @required this.colorText,
+    @required this.colorLabel,
+    @required this.colorIcon,
+    this.maxLines,
+    this.minLines,
+    this.controller,
   }) : super(key: key);
 
   final Function validator;
@@ -44,10 +51,18 @@ class TextFieldDesign extends StatelessWidget {
   final IconData icon;
   final bool obsecureText;
   final IconButton suffixIcon;
+  final double radius;
+  final Color colorText;
+  final Color colorLabel;
+  final Color colorIcon;
+  final int maxLines;
+  final int minLines;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       validator: validator,
       onSaved: onSaved,
       keyboardType: keyboardType,
@@ -56,19 +71,19 @@ class TextFieldDesign extends StatelessWidget {
       onFieldSubmitted: onFieldSubmitted,
       obscureText: (obsecureText == null) ? false : obsecureText,
       cursorColor: ColorApp().accentColor,
-      style: TextStyle(color: Colors.white70),
+      style: TextStyle(color: colorText),
       decoration: InputDecoration(
         labelText: labelText,
-        labelStyle: TextStyle(color: Colors.white54),
+        labelStyle: TextStyle(color: colorLabel),
         prefixIcon: Icon(
           icon,
-          color: ColorApp().textOrIcon,
+          color: colorIcon,
         ),
         suffixIcon: suffixIcon,
-        enabledBorder: outlineBorder(),
-        focusedBorder: outlineBorder(),
-        errorBorder: outlineBorderError(),
-        focusedErrorBorder: outlineBorderError(),
+        enabledBorder: outlineBorder(radius),
+        focusedBorder: outlineBorder(radius),
+        errorBorder: outlineBorderError(radius),
+        focusedErrorBorder: outlineBorderError(radius),
       ),
     );
   }

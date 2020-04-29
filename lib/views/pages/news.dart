@@ -1,16 +1,11 @@
 import 'package:app_news/constant/constantFile.dart';
-import 'package:app_news/constant/newsModel.dart';
 import 'package:app_news/utils/color.dart';
 import 'package:app_news/viewTabs/addNews.dart';
-import 'package:app_news/viewTabs/editNews.dart';
 import 'package:app_news/viewTabs/newsDetail.dart';
-import 'package:app_news/view_models/login_view_model.dart';
 import 'package:app_news/view_models/news_view_model.dart';
+import 'package:app_news/views/pages/editNews.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-
-import 'dart:convert';
-
 import 'package:stacked/_viewmodel_builder.dart';
 
 class News extends StatefulWidget {
@@ -20,6 +15,13 @@ class News extends StatefulWidget {
 
 class _NewsState extends State<News> {
   final NewsViewModel newsViewModel = NewsViewModel();
+
+  // @override
+  // void dispose() {
+  //   newsViewModel.dispose();
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<NewsViewModel>.reactive(
@@ -27,6 +29,7 @@ class _NewsState extends State<News> {
       onModelReady: (model) => model.lihatData,
       builder: (context, model, child) {
         return Scaffold(
+            backgroundColor: ColorApp().bgColor,
             floatingActionButton: FloatingActionButton(
               onPressed: () {
                 Navigator.of(context)
@@ -65,19 +68,44 @@ class _NewsState extends State<News> {
                                   children: <Widget>[
                                     Expanded(
                                       child: ListTile(
-                                        leading: Image.network(
-                                          BaseUrl().insertNews + x.image,
-                                          width: 100.0,
-                                          height: 100.0,
-                                          fit: BoxFit.cover,
+                                        leading: Container(
+                                          padding: const EdgeInsets.all(1.5),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: ColorApp().accentColor,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          child: Image.network(
+                                            BaseUrl().insertNews + x.image,
+                                            width: 100.0,
+                                            height: 100.0,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
-                                        title: Text(
-                                          x.title,
-                                          softWrap: true,
-                                          maxLines: 3,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
+                                        title: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              x.title,
+                                              softWrap: true,
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              x.content,
+                                              softWrap: true,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 13.0,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         subtitle: Row(
                                           mainAxisAlignment:
@@ -88,6 +116,9 @@ class _NewsState extends State<News> {
                                               softWrap: true,
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 12.0,
+                                              ),
                                             ),
                                             InkWell(
                                               child: Icon(
@@ -99,9 +130,10 @@ class _NewsState extends State<News> {
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         EditNews(
-                                                            x,
-                                                            () => model
-                                                                .lihatData),
+                                                      model: x,
+                                                      reload: () =>
+                                                          model.lihatData,
+                                                    ),
                                                   ),
                                                 );
                                               },
@@ -126,8 +158,8 @@ class _NewsState extends State<News> {
                                       const EdgeInsets.symmetric(vertical: 3.0),
                                   child: Divider(
                                     color: ColorApp().accentColor,
-                                    height: 1,
-                                    thickness: 2,
+                                    height: 0.5,
+                                    thickness: 0.75,
                                   ),
                                 ),
                               ],

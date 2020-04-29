@@ -15,12 +15,21 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final LoginViewModel loginViewModel = LoginViewModel();
+
+  @override
+  void dispose() {
+    loginViewModel.emailFocusDispose;
+    loginViewModel.passwordFocusDispose;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
     return ViewModelBuilder<LoginViewModel>.reactive(
-        viewModelBuilder: () => LoginViewModel(),
+        viewModelBuilder: () => loginViewModel,
         onModelReady: (model) => model.getPref(),
         builder: (context, model, child) {
           return Background(
@@ -38,6 +47,10 @@ class _LoginState extends State<Login> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 15.0),
                           child: TextFieldDesign(
+                            colorIcon: ColorApp().textOrIcon,
+                            colorLabel: ColorApp().colorLabel,
+                            colorText: ColorApp().colorText,
+                            radius: 25.0,
                             validator: (e) {
                               return (e.isEmpty) ? "Please Insert Email" : null;
                             },
@@ -54,6 +67,10 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         TextFieldDesign(
+                          colorIcon: ColorApp().textOrIcon,
+                          colorLabel: ColorApp().colorLabel,
+                          colorText: ColorApp().colorText,
+                          radius: 25.0,
                           validator: (p) {
                             return (p.isEmpty)
                                 ? "Please Insert Password"

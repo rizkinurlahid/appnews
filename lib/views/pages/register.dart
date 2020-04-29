@@ -15,22 +15,14 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  OutlineInputBorder outlineBorder() {
-    return OutlineInputBorder(
-      borderSide: BorderSide(
-        color: Colors.lightGreen[600],
-      ),
-      borderRadius: BorderRadius.circular(25.0),
-    );
-  }
+  final RegisterViewModel registerViewModel = RegisterViewModel();
 
-  OutlineInputBorder outlineBorderError() {
-    return OutlineInputBorder(
-      borderSide: BorderSide(
-        color: Colors.red,
-      ),
-      borderRadius: BorderRadius.circular(25.0),
-    );
+  @override
+  void dispose() {
+    registerViewModel.usernameFocusDispose;
+    registerViewModel.emailFocusDispose;
+    registerViewModel.passwordFocusDispose;
+    super.dispose();
   }
 
   @override
@@ -38,7 +30,7 @@ class _RegisterState extends State<Register> {
     final width = MediaQuery.of(context).size.width;
 
     return ViewModelBuilder<RegisterViewModel>.reactive(
-        viewModelBuilder: () => RegisterViewModel(),
+        viewModelBuilder: () => registerViewModel,
         onModelReady: (model) => null,
         builder: (context, model, child) {
           return Background(
@@ -54,6 +46,10 @@ class _RegisterState extends State<Register> {
                     Column(
                       children: <Widget>[
                         TextFieldDesign(
+                          colorIcon: ColorApp().textOrIcon,
+                          colorLabel: ColorApp().colorLabel,
+                          colorText: ColorApp().colorText,
+                          radius: 25.0,
                           validator: (e) {
                             return (e.isEmpty)
                                 ? "Please Insert Username"
@@ -72,6 +68,10 @@ class _RegisterState extends State<Register> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: TextFieldDesign(
+                            colorIcon: ColorApp().textOrIcon,
+                            colorLabel: ColorApp().colorLabel,
+                            colorText: ColorApp().colorText,
+                            radius: 25.0,
                             validator: (e) {
                               return (e.isEmpty) ? "Please Insert Email" : null;
                             },
@@ -88,6 +88,10 @@ class _RegisterState extends State<Register> {
                           ),
                         ),
                         TextFieldDesign(
+                          colorIcon: ColorApp().textOrIcon,
+                          colorLabel: ColorApp().colorLabel,
+                          colorText: ColorApp().colorText,
+                          radius: 25.0,
                           validator: (p) {
                             return (p.isEmpty)
                                 ? "Please Insert Password"

@@ -24,6 +24,8 @@ class LoginViewModel extends BaseViewModel {
   final FocusNode _passwordFocus = FocusNode();
   get emailFocus => _emailFocus;
   get passwordFocus => _passwordFocus;
+  get emailFocusDispose => _emailFocus.dispose();
+  get passwordFocusDispose => _passwordFocus.dispose();
 
   int _loading;
   get loading => _loading;

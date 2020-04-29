@@ -17,7 +17,6 @@ class _MainMenuState extends State<MainMenu> {
   @override
   void initState() {
     super.initState();
-    menuViewModel.getPref();
     menuViewModel.pageController;
   }
 

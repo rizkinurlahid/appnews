@@ -13,7 +13,7 @@ class HomeViewModel extends BaseViewModel {
   get loading => _loading;
 
   Future _lihatData() async {
-    list.clear();
+    _list.clear();
     _loading = true;
     notifyListeners();
     final response = await http.get(BaseUrl().detailNews);

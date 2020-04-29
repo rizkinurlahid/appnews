@@ -7,8 +7,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-
-  String username = "" , email= "";
+  String username = "", email = "";
 
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -27,49 +26,50 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-
-        Container(
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(top: 32),
-                width: 120,
-                height: 120,
-                child: CircleAvatar(
-                  radius: 100,
-                  child: Icon(Icons.person),
+    return Scaffold(
+      body: ListView(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(top: 32),
+                  width: 120,
+                  height: 120,
+                  child: CircleAvatar(
+                    radius: 100,
+                    child: Icon(Icons.person),
                   ),
                 ),
-
-
-
-              Container(
-                margin: EdgeInsets.only(left: 16, right: 16),
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                        leading: Icon(Icons.person, size: 45,),
-                      title : Text("Username : $username"),
-                    ),
-
-                    ListTile(
-                      leading: Icon(Icons.email,size: 45,),
-                      title : Text("Email : $email"),
-                    ),
-                  ],
+                Container(
+                  margin: EdgeInsets.only(left: 16, right: 16),
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        leading: Icon(
+                          Icons.person,
+                          size: 45,
+                        ),
+                        title: Text("Username : $username"),
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.email,
+                          size: 45,
+                        ),
+                        title: Text("Email : $email"),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        )
-      ],
-
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
-
