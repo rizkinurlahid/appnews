@@ -50,6 +50,8 @@ class _LoginState extends State<Login> {
                             colorIcon: ColorApp().textOrIcon,
                             colorLabel: ColorApp().colorLabel,
                             colorText: ColorApp().colorText,
+                            maxLines: 1,
+                            minLines: 1,
                             radius: 25.0,
                             validator: (e) {
                               return (e.isEmpty) ? "Please Insert Email" : null;

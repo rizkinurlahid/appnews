@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:app_news/constant/constantFile.dart';
 import 'package:app_news/constant/newsModel.dart';
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
@@ -42,18 +43,20 @@ class NewsViewModel extends BaseViewModel {
 
   get lihatData => _lihatData();
 
-  _delete(String id_news) async {
+  _delete(String idNews, BuildContext context) async {
     final response =
-        await http.post(BaseUrl().deleteNews, body: {"id_news": id_news});
+        await http.post(BaseUrl().deleteNews, body: {"id_news": idNews});
     final data = jsonDecode(response.body);
     int value = data['value'];
     String pesan = data['message'];
     if (value == 1) {
       _lihatData();
+      Navigator.pop(context);
     } else {
       print(pesan);
+      Navigator.pop(context);
     }
   }
 
-  get delete => (id) => _delete(id);
+  get delete => (id, context) => _delete(id, context);
 }

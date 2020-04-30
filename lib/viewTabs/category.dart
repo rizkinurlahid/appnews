@@ -1,3 +1,4 @@
+import 'package:app_news/utils/color.dart';
 import 'package:app_news/viewTabs/sport.dart';
 import 'package:app_news/viewTabs/teknologi.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +18,11 @@ class _CategoryState extends State<Category> {
           title: Container(
             padding: EdgeInsets.only(top: 8, bottom: 8),
             child: TabBar(
-              indicatorColor: Colors.red,
-              labelColor: Colors.red,
-              unselectedLabelColor: Colors.grey,
               indicator: UnderlineTabIndicator(
-                  borderSide: BorderSide(style: BorderStyle.none)),
+                borderSide: BorderSide(
+                    style: BorderStyle.solid,
+                    color: ColorApp().lightPrimaryColor),
+              ),
               tabs: <Widget>[
                 Tab(
                   text: "Teknologi",
@@ -29,25 +30,6 @@ class _CategoryState extends State<Category> {
                 Tab(
                   text: "Sport",
                 ),
-//                InkWell(
-//                  child: Row(
-//                    children: <Widget>[
-//                      Icon(Icons.tablet_mac),
-//                      Text("Teknologi"),
-//
-//                    ],
-//
-//                  ),
-//                ),
-//              InkWell(
-//                child: Row(
-//                  children: <Widget>[
-//                    Icon(Icons.directions_bike),
-//                    Text("Sport"),
-//                  ],
-//
-//                ),
-//              ),
               ],
             ),
           ),

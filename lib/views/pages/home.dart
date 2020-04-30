@@ -1,7 +1,7 @@
 import 'package:app_news/utils/color.dart';
 import 'package:app_news/constant/constantFile.dart';
-import 'package:app_news/viewTabs/newsDetail.dart';
 import 'package:app_news/view_models/home_view_model.dart';
+import 'package:app_news/views/pages/newsDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/_viewmodel_builder.dart';
 
@@ -56,7 +56,9 @@ class _HomeState extends State<Home> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => NewsDetail(x)),
+                                      builder: (context) => NewsDetail(
+                                            newsModel: x,
+                                          )),
                                 );
                               },
                               child: Stack(
@@ -117,50 +119,53 @@ class _HomeState extends State<Home> {
                           itemBuilder: (context, i) {
                             final x = model.list[i];
                             return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => NewsDetail(x)));
-                                },
-                                child: Column(
-                                  children: <Widget>[
-                                    ListTile(
-                                      leading: Image.network(
-                                        BaseUrl().insertNews + x.image,
-                                        width: 100.0,
-                                        height: 100.0,
-                                        fit: BoxFit.fill,
-                                      ),
-                                      title: Text(x.title),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            x.content,
-                                            maxLines: 1,
-                                            softWrap: true,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: ColorApp().secondaryText,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 13.0,
-                                            ),
-                                          ),
-                                          Text(
-                                            x.date_news,
-                                            style: TextStyle(fontSize: 11.0),
-                                          ),
-                                        ],
-                                      ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => NewsDetail(
+                                              newsModel: x,
+                                            )));
+                              },
+                              child: Column(
+                                children: <Widget>[
+                                  ListTile(
+                                    leading: Image.network(
+                                      BaseUrl().insertNews + x.image,
+                                      width: 100.0,
+                                      height: 100.0,
+                                      fit: BoxFit.fill,
                                     ),
-                                    Divider(
-                                      indent: width / 10,
-                                      endIndent: width / 10,
-                                    )
-                                  ],
-                                ));
+                                    title: Text(x.title),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          x.description,
+                                          maxLines: 1,
+                                          softWrap: true,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: ColorApp().secondaryText,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 13.0,
+                                          ),
+                                        ),
+                                        Text(
+                                          x.date_news,
+                                          style: TextStyle(fontSize: 11.0),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Divider(
+                                    indent: width / 10,
+                                    endIndent: width / 10,
+                                  )
+                                ],
+                              ),
+                            );
                           }),
                     ],
                   ),

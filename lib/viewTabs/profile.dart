@@ -1,4 +1,6 @@
+import 'package:app_news/utils/color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
@@ -19,56 +21,56 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getPref();
   }
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: ListView(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(top: 32),
-                  width: 120,
-                  height: 120,
-                  child: CircleAvatar(
-                    radius: 100,
-                    child: Icon(Icons.person),
-                  ),
+      backgroundColor: ColorApp().bgColor,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 33.0),
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              CircleAvatar(
+                backgroundColor: ColorApp().primaryColor,
+                radius: 50,
+                child: Icon(
+                  Ionicons.md_person,
+                  size: 50.0,
+                  color: ColorApp().lightPrimaryColor,
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 16, right: 16),
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        leading: Icon(
-                          Icons.person,
-                          size: 45,
-                        ),
-                        title: Text("Username : $username"),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.email,
-                          size: 45,
-                        ),
-                        title: Text("Email : $email"),
-                      ),
-                    ],
+              ),
+              Container(
+                width: width / 1.5,
+                child: ListTile(
+                  leading: Icon(
+                    Ionicons.md_person,
+                    size: 30,
+                    color: ColorApp().primaryColor,
                   ),
+                  title: Text("Username : "),
+                  subtitle: Text(username),
                 ),
-              ],
-            ),
-          )
-        ],
+              ),
+              Container(
+                width: width / 1.5,
+                child: ListTile(
+                  leading: Icon(
+                    Icons.email,
+                    size: 30,
+                    color: ColorApp().primaryColor,
+                  ),
+                  title: Text("Email : "),
+                  subtitle: Text(email),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

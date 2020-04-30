@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:app_news/constant/constantFile.dart';
 import 'package:app_news/views/pages/mainMenu.dart';
-import 'package:app_news/views/pages/register.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/_base_viewmodels.dart';

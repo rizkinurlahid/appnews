@@ -62,9 +62,16 @@ class TextFieldDesign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      toolbarOptions: ToolbarOptions(
+        selectAll: true,
+        copy: true,
+        paste: true,
+      ),
       controller: controller,
       validator: validator,
       onSaved: onSaved,
+      maxLines: (obsecureText == null) ? maxLines : 1,
+      minLines: (obsecureText == null) ? minLines : 1,
       keyboardType: keyboardType,
       textInputAction: textInputAction,
       focusNode: focusNode,

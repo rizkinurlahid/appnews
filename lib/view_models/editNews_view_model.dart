@@ -11,7 +11,7 @@ import 'package:async/async.dart';
 class EditNewsViewModel extends BaseViewModel {
   final _key = new GlobalKey<FormState>();
   get key => _key;
-  String title, content, description, id_users;
+  String title, content, description, idUsers;
 
   File _imageFile;
   get imageFile => _imageFile;
@@ -28,6 +28,9 @@ class EditNewsViewModel extends BaseViewModel {
   get contentFocus => _contentFocus;
   get descriptionFocus => _descriptionFocus;
 
+  bool _loading = false;
+  get loading => _loading;
+
   _pilihGallery() async {
     var image = await ImagePicker.pickImage(
         source: ImageSource.gallery, maxHeight: 1920, maxWidth: 1080);
@@ -41,7 +44,7 @@ class EditNewsViewModel extends BaseViewModel {
   setup({@required title, @required content, @required description}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    id_users = preferences.getString("id_users");
+    idUsers = preferences.getString("id_users");
     notifyListeners();
 
     _txtTitle = TextEditingController(text: title);
@@ -82,12 +85,16 @@ class EditNewsViewModel extends BaseViewModel {
       request.fields['title'] = title;
       request.fields['content'] = content;
       request.fields['description'] = description;
-      request.fields['id_users'] = id_users;
+      request.fields['id_users'] = idUsers;
       request.fields['id_news'] = idNews;
+
+      _loading = true;
+      notifyListeners();
 
       if (_imageFile != null) {
         var stream =
             http.ByteStream(DelegatingStream.typed(_imageFile.openRead()));
+
         var length = await _imageFile.length();
 
         request.files.add(http.MultipartFile("image", stream, length,
@@ -98,10 +105,12 @@ class EditNewsViewModel extends BaseViewModel {
         if (response.statusCode > 2) {
           print("image Upload");
           reload();
+          _loading = false;
+
           Navigator.pop(context);
-          notifyListeners();
         } else {
           print("image failed");
+          _loading = false;
         }
       } else {
         request.fields['gambar'] = image;
@@ -111,10 +120,12 @@ class EditNewsViewModel extends BaseViewModel {
           print("Updated");
           reload();
           Navigator.pop(context);
-          notifyListeners();
+          _loading = false;
+
           print(_imageFile);
         } else {
           print("image failed");
+          _loading = false;
         }
       }
     } catch (e) {

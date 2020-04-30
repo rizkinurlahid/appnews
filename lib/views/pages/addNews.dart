@@ -1,46 +1,38 @@
-import 'package:app_news/constant/constantFile.dart';
-import 'package:app_news/constant/newsModel.dart';
 import 'package:app_news/utils/color.dart';
-import 'package:app_news/view_models/editNews_view_model.dart';
+import 'package:app_news/view_models/addNews_view_model.dart';
 import 'package:app_news/views/widgets/button.dart';
+import 'package:app_news/views/widgets/placeHolder.dart';
 import 'package:app_news/views/widgets/textFieldDesign.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:stacked/_viewmodel_builder.dart';
 
-class EditNews extends StatefulWidget {
-  final NewsModel model;
+class AddNews extends StatefulWidget {
   final VoidCallback reload;
-  EditNews({this.model, this.reload});
-
+  AddNews({this.reload});
   @override
-  _EditNewsState createState() => _EditNewsState();
+  _AddNewsState createState() => _AddNewsState();
 }
 
-class _EditNewsState extends State<EditNews> {
-  final EditNewsViewModel editNewsViewModel = EditNewsViewModel();
+class _AddNewsState extends State<AddNews> {
+  final AddNewsViewModel addNewsViewModel = AddNewsViewModel();
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<EditNewsViewModel>.reactive(
-      viewModelBuilder: () => editNewsViewModel,
-      onModelReady: (model) => model.setup(
-        title: widget.model.title,
-        content: widget.model.content,
-        description: widget.model.description,
-      ),
+    return ViewModelBuilder<AddNewsViewModel>.reactive(
+      viewModelBuilder: () => addNewsViewModel,
+      onModelReady: (model) => model.getPref(),
       builder: (context, model, child) {
         return Scaffold(
           backgroundColor: ColorApp().bgColor,
           appBar: AppBar(
-            title: Text("Edit News"),
+            title: Text("Add News"),
           ),
           body: Form(
             key: model.key,
             child: ListView(
               padding: EdgeInsets.all(10.0),
               children: <Widget>[
-                //3.2 Edit image
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -66,37 +58,49 @@ class _EditNewsState extends State<EditNews> {
                         ],
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(5.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: ColorApp().accentColor,
-                          width: 2.0,
+                    Stack(
+                      children: <Widget>[
+                        AnimatedContainer(
+                          duration: Duration(milliseconds: 500),
+                          alignment: Alignment.bottomCenter,
+                          height: (model.chooseImg) ? 180.0 : 150.0,
+                          child: Text(
+                            'No Image',
+                            style: TextStyle(
+                              color: Colors.red,
+                            ),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      width: double.infinity,
-                      child: InkWell(
-                        onTap: () => model.pilihGallery(),
-                        child: model.imageFile == null
-                            ? Image.network(
-                                BaseUrl().insertNews + widget.model.image,
-                                fit: BoxFit.fill,
-                                height: 150.0,
-                              )
-                            : Image.file(
-                                model.imageFile,
-                                fit: BoxFit.fill,
-                                height: 150.0,
-                              ),
-                      ),
+                        Container(
+                          padding: const EdgeInsets.all(5.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: (model.chooseImg)
+                                  ? Colors.red
+                                  : ColorApp().accentColor,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          width: double.infinity,
+                          child: InkWell(
+                            onTap: () => model.pilihGallery(),
+                            child: model.imageFile == null
+                                ? PlaceholderAddNews()
+                                : Image.file(
+                                    model.imageFile,
+                                    fit: BoxFit.fill,
+                                    height: 150.0,
+                                  ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: TextFieldDesign(
-                    controller: model.txtTitle,
                     onSaved: (e) => model.title = e,
                     maxLines: 3,
                     minLines: 3,
@@ -117,9 +121,7 @@ class _EditNewsState extends State<EditNews> {
                     },
                   ),
                 ),
-
                 TextFieldDesign(
-                  controller: model.txtDescription,
                   onSaved: (e) => model.description = e,
                   maxLines: 3,
                   minLines: 3,
@@ -138,7 +140,6 @@ class _EditNewsState extends State<EditNews> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: TextFieldDesign(
-                    controller: model.txtContent,
                     onSaved: (e) => model.content = e,
                     maxLines: 15,
                     minLines: 15,
@@ -184,23 +185,9 @@ class _EditNewsState extends State<EditNews> {
                   press: () => model.check(
                     context: context,
                     reload: widget.reload,
-                    idNews: widget.model.idNews,
-                    image: widget.model.image,
                   ),
                   width: null,
                 ),
-
-                // MaterialButton(
-                //   onPressed: () {
-                //     model.check(
-                //       context: context,
-                //       reload: widget.reload,
-                //       idNews: widget.model.id_news,
-                //       image: widget.model.image,
-                //     );
-                //   },
-                //   child: Text("Simpan"),
-                // ),
               ],
             ),
           ),

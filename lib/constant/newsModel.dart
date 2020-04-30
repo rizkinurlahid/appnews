@@ -1,14 +1,13 @@
 class NewsModel {
-  final String id_news;
+  final String idNews;
   final String image;
   final String title;
   final String content;
   final String description;
-  final String date_news;
-  final String id_users;
+  final String dateNews;
+  final String idUsers;
   final String username;
 
-  NewsModel(this.id_news, this.image, this.title, this.content,
-      this.description, this.date_news, this.id_users, this.username);
-
+  NewsModel(this.idNews, this.image, this.title, this.content, this.description,
+      this.dateNews, this.idUsers, this.username);
 }
