@@ -9,13 +9,13 @@ class HomeViewModel extends BaseViewModel {
   final _list = new List<NewsModel>();
   get list => _list;
 
-  var _loading = false;
-  get loading => _loading;
+  var loading = false;
 
   Future _lihatData() async {
     _list.clear();
-    _loading = true;
+    loading = true;
     notifyListeners();
+
     final response = await http.get(BaseUrl().detailNews);
 
     if (response.contentLength == 2) {
@@ -32,10 +32,9 @@ class HomeViewModel extends BaseViewModel {
           api['id_users'],
           api['username'],
         );
-        list.add(ab);
+        _list.add(ab);
       });
-
-      _loading = false;
+      loading = false;
       notifyListeners();
     }
   }

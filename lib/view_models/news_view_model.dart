@@ -7,16 +7,16 @@ import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
 class NewsViewModel extends BaseViewModel {
-  var _loading = false;
-  get loading => _loading;
+  var loading = false;
 
   final _list = new List<NewsModel>();
   get list => _list;
 
   Future _lihatData() async {
-    _loading = true;
-    notifyListeners();
     _list.clear();
+    loading = true;
+    notifyListeners();
+
     final response = await http.get(BaseUrl().detailNews);
 
     if (response.contentLength == 2) {
@@ -36,7 +36,7 @@ class NewsViewModel extends BaseViewModel {
         _list.add(ab);
       });
 
-      _loading = false;
+      loading = false;
       notifyListeners();
     }
   }

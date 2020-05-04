@@ -3,11 +3,13 @@ import 'package:app_news/constant/newsModel.dart';
 import 'package:app_news/constant/respons.dart';
 import 'package:app_news/utils/color.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewsDetail extends StatefulWidget {
   final NewsModel newsModel;
   final Article article;
-  NewsDetail({this.newsModel, this.article});
+  final int check;
+  NewsDetail({this.newsModel, this.article, @required this.check});
 
   @override
   _NewsDetailState createState() => _NewsDetailState();
@@ -16,8 +18,10 @@ class NewsDetail extends StatefulWidget {
 class _NewsDetailState extends State<NewsDetail> {
   @override
   Widget build(BuildContext context) {
-    final x = widget.article;
+    final check = widget.check;
     final y = widget.newsModel;
+    final x = widget.article;
+
     return Scaffold(
       backgroundColor: ColorApp().bgColor,
       appBar: AppBar(
@@ -33,7 +37,7 @@ class _NewsDetailState extends State<NewsDetail> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
-                  (x == null) ? y.title : x.title,
+                  (check == 0) ? y.title : (check == 1) ? x.title : 'No Title',
                   textAlign: TextAlign.justify,
                   style: TextStyle(
                     fontSize: 18.0,
@@ -46,10 +50,21 @@ class _NewsDetailState extends State<NewsDetail> {
                 width: MediaQuery.of(context).size.width,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(3.0),
-                  child: Image.network(
-                    (x == null) ? BaseUrl().insertNews + y.image : x.urlToImage,
-                    fit: BoxFit.fill,
-                  ),
+                  child: (check == 0)
+                      ? Image.network(
+                          BaseUrl().insertNews + y.image,
+                          fit: BoxFit.fill,
+                        )
+                      : (check == 1)
+                          ? Image.network(
+                              x.urlToImage,
+                              fit: BoxFit.fill,
+                            )
+                          : Container(
+                              child: Center(
+                                child: Text('data'),
+                              ),
+                            ),
                 ),
               ),
               SizedBox(
@@ -59,14 +74,19 @@ class _NewsDetailState extends State<NewsDetail> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    (x == null) ? y.dateNews : x.publishedAt,
+                    (check == 0)
+                        ? y.dateNews
+                        : (check == 1) ? x.publishedAt : 'No Date',
+                    // _ifElse(x, y, x.publishedAt, y.dateNews, 'No Date'),
                     style: TextStyle(
                       color: ColorApp().primaryColor,
                       fontSize: 12.0,
                     ),
                   ),
                   Text(
-                    'Author : ${(x == null) ? y.username : x.author}',
+                    // 'Author : ${_ifElse(x, y, x.author, y.username, 'No Author')}',
+                    'Author : ${(check == 0) ? y.username : (check == 1) ? x.author : 'No Author'}',
+
                     style: TextStyle(
                       color: ColorApp().primaryColor,
                       fontSize: 12.0,
@@ -78,17 +98,40 @@ class _NewsDetailState extends State<NewsDetail> {
                 height: 7.0,
               ),
               Text(
-                (x == null) ? y.content : x.content,
+                (check == 0)
+                    ? y.content
+                    : (check == 1) ? x.content : 'No Content',
+                // _ifElse(x, y, x.content, y.content, 'No Content'),
                 textAlign: TextAlign.justify,
               ),
               SizedBox(
                 height: 7.0,
               ),
-              Text(
-                (x == null) ? '' : 'For more : ${x.url}',
-              ),
+              (check == 1)
+                  ? Text(
+                      'For more :',
+                    )
+                  : Container(),
+              (check == 1)
+                  ? GestureDetector(
+                      child: Text(
+                        (x.url != null) ? x.url : 'No Url',
+                        // _ifElse(x, y, x.url, '', 'No Url'),
+                        style: TextStyle(color: Colors.cyan),
+                      ),
+                      onTap: () => _launchURL(x.url),
+                    )
+                  : Container(),
             ],
           )),
     );
+  }
+
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

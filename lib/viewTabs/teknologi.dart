@@ -1,8 +1,16 @@
+import 'dart:async';
+
 import 'package:app_news/constant/respons.dart';
 import 'package:app_news/utils/color.dart';
+import 'package:app_news/view_models/checkConn.dart';
+import 'package:app_news/view_models/tech_view_model.dart';
 import 'package:app_news/views/pages/newsDetail.dart';
+import 'package:app_news/views/widgets/button.dart';
+import 'package:app_news/views/widgets/circularDesign.dart';
+import 'package:app_news/views/widgets/noInternet.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:stacked/_viewmodel_builder.dart';
 
 class Teknologi extends StatefulWidget {
   @override
@@ -10,109 +18,142 @@ class Teknologi extends StatefulWidget {
 }
 
 class _TeknologiState extends State<Teknologi> {
-  ModelNews news;
-  bool loading = true;
+  final TechViewModel techViewModel = TechViewModel();
 
-  Future<ModelNews> getNews() async {
-    var res = await http.get(
-        'http://newsapi.org/v2/top-headlines?country=id&category=technology&apiKey=36fe26ba67d64765b26ca5e8eaf017b0');
-    news = modelNewsFromJson(res.body);
-    print(news.status);
-    if (news.status == 'ok') setState(() => loading = false);
-
-    return news;
-  }
+  Map _source = {ConnectivityResult.none: false};
+  MyConnectivity _connectivity = MyConnectivity.instance;
 
   @override
   void initState() {
-    getNews();
+    _connectivity.initialise();
+
+    _connectivity.myStream.listen((source) {
+      if (mounted) setState(() => _source = source);
+    });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: loading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.builder(
-              itemCount: news.articles.length,
-              itemBuilder: (context, index) {
-                Article article = news.articles[index];
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NewsDetail(
-                          article: article,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        leading: Image.network(
-                          article.urlToImage,
-                          width: 100.0,
-                          height: 100.0,
-                          fit: BoxFit.fill,
-                        ),
-                        title: Text(
-                          article.title,
-                          softWrap: true,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              article.description,
-                              maxLines: 1,
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: ColorApp().secondaryText,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13.0,
-                              ),
-                            ),
-                            Text(
-                              article.publishedAt,
-                              style: TextStyle(fontSize: 11.0),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        indent: width / 10,
-                        endIndent: width / 10,
-                      )
-                    ],
-                  ),
-                );
 
-                // return Card(
-                //   margin: EdgeInsets.all(8),
-                //   child: ListTile(
-                //     contentPadding: EdgeInsets.all(8),
-                //     leading: Image.network(
-                //       "${article.urlToImage}",
-                //       width: 100,
-                //     ),
-                //     title: Text(article.title),
-                //     subtitle: Text(article.author ?? "-"),
-                //   ),
-                // );
-              },
-            ),
+    String string;
+    int nilai;
+    switch (_source.keys.toList()[0]) {
+      case ConnectivityResult.none:
+        string = "Offline";
+        nilai = 0;
+        print(string);
+        break;
+      case ConnectivityResult.mobile:
+        string = "Mobile: Online";
+        nilai = 1;
+        print(string);
+        break;
+      case ConnectivityResult.wifi:
+        string = "WiFi: Online";
+        nilai = 2;
+        print(string);
+    }
+
+    return (nilai == 1 || nilai == 2)
+        ? ViewModelBuilder<TechViewModel>.reactive(
+            viewModelBuilder: () => techViewModel,
+            onModelReady: (model) => model.getNews,
+            disposeViewModel: false,
+            builder: (context, model, child) {
+              return Scaffold(
+                backgroundColor: ColorApp().bgColor,
+                body: (model.loading)
+                    ? CircularDesign()
+                    : buildTech(width, model.articles),
+              );
+            },
+          )
+        : NoInternet(
+            nilai: nilai,
+          );
+  }
+
+  ListView buildTech(double width, articles) {
+    articles.sort((list1, list2) {
+      return list2.publishedAt
+          .toString()
+          .compareTo(list1.publishedAt.toString());
+    }); //ascending
+    return ListView.builder(
+      itemCount: articles.length,
+      itemBuilder: (context, index) {
+        Article article = articles[index];
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NewsDetail(
+                  article: article,
+                  check: 1,
+                ),
+              ),
+            );
+          },
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                leading: (article.urlToImage != null)
+                    ? Image.network(
+                        article.urlToImage,
+                        width: 100.0,
+                        height: 100.0,
+                        fit: BoxFit.fill,
+                        filterQuality: FilterQuality.low,
+                      )
+                    : Container(
+                        width: 100.0,
+                        height: 100.0,
+                        child: Center(
+                          child: Text('No Image'),
+                        ),
+                      ),
+                title: Text(
+                  (article.title != null) ? article.title : '',
+                  softWrap: true,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      (article.description != null) ? article.description : '',
+                      maxLines: 1,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: ColorApp().secondaryText,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13.0,
+                      ),
+                    ),
+                    Text(
+                      (article.publishedAt != null) ? article.publishedAt : '',
+                      style: TextStyle(fontSize: 11.0),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                indent: width / 10,
+                endIndent: width / 10,
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }
