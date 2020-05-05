@@ -53,7 +53,7 @@ class _ProfileState extends State<Profile> {
                     color: ColorApp().primaryColor,
                   ),
                   title: Text("Username : "),
-                  subtitle: Text(username),
+                  subtitle: Text(username ?? 'null'),
                 ),
               ),
               Container(
@@ -65,7 +65,7 @@ class _ProfileState extends State<Profile> {
                     color: ColorApp().primaryColor,
                   ),
                   title: Text("Email : "),
-                  subtitle: Text(email),
+                  subtitle: Text(email ?? 'null'),
                 ),
               ),
             ],

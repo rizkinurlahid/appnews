@@ -7,7 +7,6 @@ import 'package:app_news/views/widgets/circularDesign.dart';
 import 'package:app_news/views/widgets/noInternet.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:stacked/_viewmodel_builder.dart';
 
 class Sport extends StatefulWidget {
@@ -103,6 +102,24 @@ class _SportState extends State<Sport> {
                         width: 100.0,
                         height: 100.0,
                         fit: BoxFit.fill,
+                        filterQuality: FilterQuality.low,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Container(
+                            width: 100.0,
+                            height: 100.0,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes
+                                    : null,
+                              ),
+                            ),
+                          );
+                        },
                       )
                     : Container(
                         width: 100.0,

@@ -117,7 +117,7 @@ class _AddNewsState extends State<AddNews> {
                     focusNode: model.titleFocus,
                     onFieldSubmitted: (term) {
                       model.fieldFocusChange(
-                          context, model.titleFocus, model.contentFocus);
+                          context, model.titleFocus, model.descriptionFocus);
                     },
                   ),
                 ),
@@ -130,12 +130,16 @@ class _AddNewsState extends State<AddNews> {
                   colorIcon: ColorApp().secondaryText,
                   colorText: ColorApp().secondaryText,
                   icon: MaterialIcons.description,
-                  textInputAction: TextInputAction.newline,
+                  textInputAction: TextInputAction.next,
                   labelText: 'Description',
                   validator: (p) {
                     return (p.isEmpty) ? "Please Insert Description" : null;
                   },
                   focusNode: model.descriptionFocus,
+                  onFieldSubmitted: (term) {
+                    model.fieldFocusChange(
+                        context, model.descriptionFocus, model.contentFocus);
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -148,44 +152,52 @@ class _AddNewsState extends State<AddNews> {
                     colorIcon: ColorApp().secondaryText,
                     colorText: ColorApp().secondaryText,
                     icon: MaterialCommunityIcons.content_save_edit,
-                    textInputAction: TextInputAction.next,
+                    textInputAction: TextInputAction.newline,
                     labelText: 'Content',
                     validator: (p) {
                       return (p.isEmpty) ? "Please Insert Content" : null;
                     },
                     focusNode: model.contentFocus,
-                    onFieldSubmitted: (term) {
-                      model.fieldFocusChange(
-                          context, model.contentFocus, model.descriptionFocus);
-                    },
                   ),
                 ),
                 DesignButton(
-                  child: (model.loading)
+                  child: (model.chooseImg)
                       ? Center(
-                          child: CircularProgressIndicator(
-                          valueColor: new AlwaysStoppedAnimation<Color>(
-                              ColorApp().lightPrimaryColor),
-                        ))
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(FontAwesome5.save,
-                                color: ColorApp().lightPrimaryColor),
-                            SizedBox(
-                              width: 5.0,
+                          child: Text(
+                            "Choose Image",
+                            style:
+                                TextStyle(color: ColorApp().lightPrimaryColor),
+                          ),
+                        )
+                      : (model.loading)
+                          ? Center(
+                              child: CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  ColorApp().lightPrimaryColor),
+                            ))
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(FontAwesome5.save,
+                                    color: ColorApp().lightPrimaryColor),
+                                SizedBox(
+                                  width: 5.0,
+                                ),
+                                Text(
+                                  "Simpan",
+                                  style: TextStyle(
+                                      color: ColorApp().lightPrimaryColor),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "Simpan",
-                              style: TextStyle(
-                                  color: ColorApp().lightPrimaryColor),
+                  press: () => (model.chooseImg)
+                      ? null
+                      : (model.loading)
+                          ? null
+                          : model.check(
+                              context: context,
+                              reload: widget.reload,
                             ),
-                          ],
-                        ),
-                  press: () => model.check(
-                    context: context,
-                    reload: widget.reload,
-                  ),
                   width: null,
                 ),
               ],

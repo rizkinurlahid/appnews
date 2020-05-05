@@ -1,12 +1,8 @@
-import 'dart:async';
-
 import 'package:app_news/utils/color.dart';
 import 'package:app_news/constant/constantFile.dart';
 import 'package:app_news/view_models/checkConn.dart';
 import 'package:app_news/view_models/home_view_model.dart';
 import 'package:app_news/views/pages/newsDetail.dart';
-import 'package:app_news/views/widgets/button.dart';
-import 'package:app_news/views/widgets/circularDesign.dart';
 import 'package:app_news/views/widgets/noInternet.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
@@ -132,6 +128,24 @@ class _HomeState extends State<Home> {
                           height: 300,
                           colorBlendMode: BlendMode.darken,
                           color: Colors.black54,
+                          filterQuality: FilterQuality.low,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              width: 400,
+                              height: 300,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes
+                                      : null,
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -194,6 +208,24 @@ class _HomeState extends State<Home> {
                         width: 100.0,
                         height: 100.0,
                         fit: BoxFit.fill,
+                        filterQuality: FilterQuality.low,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Container(
+                            width: 100.0,
+                            height: 100.0,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes
+                                    : null,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       title: Text(x.title),
                       subtitle: Column(

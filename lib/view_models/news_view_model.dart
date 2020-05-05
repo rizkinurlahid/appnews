@@ -18,8 +18,7 @@ class NewsViewModel extends BaseViewModel {
     notifyListeners();
 
     final response = await http.get(BaseUrl().detailNews);
-
-    if (response.contentLength == 2) {
+    if (response.statusCode != 404) if (response.contentLength == 2) {
     } else {
       final data = jsonDecode(response.body);
       data.forEach((api) {

@@ -83,6 +83,27 @@ class _EditNewsState extends State<EditNews> {
                                 BaseUrl().insertNews + widget.model.image,
                                 fit: BoxFit.fill,
                                 height: 150.0,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Container(
+                                    width: 100.0,
+                                    height: 100.0,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes
+                                            : null,
+                                      ),
+                                    ),
+                                  );
+                                },
                               )
                             : Image.file(
                                 model.imageFile,
@@ -113,7 +134,7 @@ class _EditNewsState extends State<EditNews> {
                     focusNode: model.titleFocus,
                     onFieldSubmitted: (term) {
                       model.fieldFocusChange(
-                          context, model.titleFocus, model.contentFocus);
+                          context, model.titleFocus, model.descriptionFocus);
                     },
                   ),
                 ),
@@ -128,12 +149,16 @@ class _EditNewsState extends State<EditNews> {
                   colorIcon: ColorApp().secondaryText,
                   colorText: ColorApp().secondaryText,
                   icon: MaterialIcons.description,
-                  textInputAction: TextInputAction.newline,
+                  textInputAction: TextInputAction.next,
                   labelText: 'Description',
                   validator: (p) {
                     return (p.isEmpty) ? "Please Insert Description" : null;
                   },
                   focusNode: model.descriptionFocus,
+                  onFieldSubmitted: (term) {
+                    model.fieldFocusChange(
+                        context, model.descriptionFocus, model.contentFocus);
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -147,16 +172,12 @@ class _EditNewsState extends State<EditNews> {
                     colorIcon: ColorApp().secondaryText,
                     colorText: ColorApp().secondaryText,
                     icon: MaterialCommunityIcons.content_save_edit,
-                    textInputAction: TextInputAction.next,
+                    textInputAction: TextInputAction.newline,
                     labelText: 'Content',
                     validator: (p) {
                       return (p.isEmpty) ? "Please Insert Content" : null;
                     },
                     focusNode: model.contentFocus,
-                    onFieldSubmitted: (term) {
-                      model.fieldFocusChange(
-                          context, model.contentFocus, model.descriptionFocus);
-                    },
                   ),
                 ),
                 DesignButton(
@@ -181,12 +202,14 @@ class _EditNewsState extends State<EditNews> {
                             ),
                           ],
                         ),
-                  press: () => model.check(
-                    context: context,
-                    reload: widget.reload,
-                    idNews: widget.model.idNews,
-                    image: widget.model.image,
-                  ),
+                  press: () => (model.loading)
+                      ? null
+                      : model.check(
+                          context: context,
+                          reload: widget.reload,
+                          idNews: widget.model.idNews,
+                          image: widget.model.image,
+                        ),
                   width: null,
                 ),
 

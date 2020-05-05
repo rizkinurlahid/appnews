@@ -14,7 +14,7 @@ class TechViewModel extends BaseViewModel {
 
     var res = await http.get(BaseUrl().techApi);
 
-    if (res.contentLength != 2) {
+    if (res.statusCode != 404) if (res.contentLength != 2) {
       _news = modelNewsFromJson(res.body);
     }
     print(_news.status);

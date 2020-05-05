@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:app_news/constant/constantFile.dart';
 import 'package:app_news/utils/color.dart';
 import 'package:app_news/view_models/checkConn.dart';
@@ -7,7 +5,6 @@ import 'package:app_news/view_models/news_view_model.dart';
 import 'package:app_news/views/pages/addNews.dart';
 import 'package:app_news/views/pages/editNews.dart';
 import 'package:app_news/views/pages/newsDetail.dart';
-import 'package:app_news/views/widgets/button.dart';
 import 'package:app_news/views/widgets/circularDesign.dart';
 import 'package:app_news/views/widgets/noInternet.dart';
 import 'package:connectivity/connectivity.dart';
@@ -141,6 +138,27 @@ class _NewsState extends State<News> {
                               width: 100.0,
                               height: 100.0,
                               fit: BoxFit.cover,
+                              filterQuality: FilterQuality.low,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Container(
+                                  width: 100.0,
+                                  height: 100.0,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      value: loadingProgress
+                                                  .expectedTotalBytes !=
+                                              null
+                                          ? loadingProgress
+                                                  .cumulativeBytesLoaded /
+                                              loadingProgress.expectedTotalBytes
+                                          : null,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                           title: Column(

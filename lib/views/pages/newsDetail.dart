@@ -54,15 +54,54 @@ class _NewsDetailState extends State<NewsDetail> {
                       ? Image.network(
                           BaseUrl().insertNews + y.image,
                           fit: BoxFit.fill,
+                          filterQuality: FilterQuality.low,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              width: 100.0,
+                              height: 100.0,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes
+                                      : null,
+                                ),
+                              ),
+                            );
+                          },
                         )
                       : (check == 1)
                           ? Image.network(
                               x.urlToImage,
                               fit: BoxFit.fill,
+                              filterQuality: FilterQuality.low,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Container(
+                                  width: 100.0,
+                                  height: 100.0,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      value: loadingProgress
+                                                  .expectedTotalBytes !=
+                                              null
+                                          ? loadingProgress
+                                                  .cumulativeBytesLoaded /
+                                              loadingProgress.expectedTotalBytes
+                                          : null,
+                                    ),
+                                  ),
+                                );
+                              },
                             )
                           : Container(
                               child: Center(
-                                child: Text('data'),
+                                child: Text('No Image'),
                               ),
                             ),
                 ),

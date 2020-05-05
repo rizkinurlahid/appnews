@@ -53,6 +53,9 @@ class AddNewsViewModel extends BaseViewModel {
         source: ImageSource.gallery, maxHeight: 1920, maxWidth: 1080);
 
     _imageFile = image;
+    if (_imageFile != null) {
+      _noImg = false;
+    }
     notifyListeners();
   }
 
@@ -62,6 +65,16 @@ class AddNewsViewModel extends BaseViewModel {
     try {
       var uri = Uri.parse(BaseUrl().addNews);
       var request = http.MultipartRequest("POST", uri);
+
+      //--------------------------------------------------------------
+      request.fields['title'] = title;
+      request.fields['content'] = content;
+      request.fields['description'] = description;
+      request.fields['id_users'] = idUsers;
+
+      
+      
+
       if (_imageFile != null) {
         var stream =
             http.ByteStream(DelegatingStream.typed(_imageFile.openRead()));
@@ -73,12 +86,6 @@ class AddNewsViewModel extends BaseViewModel {
         _noImg = false;
         _loading = true;
         notifyListeners();
-
-        //--------------------------------------------------------------
-        request.fields['title'] = title;
-        request.fields['content'] = content;
-        request.fields['description'] = description;
-        request.fields['id_users'] = idUsers;
 
         var response = await request.send();
 
