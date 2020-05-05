@@ -37,7 +37,9 @@ class _NewsDetailState extends State<NewsDetail> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
-                  (check == 0) ? y.title : (check == 1) ? x.title : 'No Title',
+                  (check == 0)
+                      ? y.title
+                      : (check == 1) ? x.title ?? 'No Title' : 'No Title',
                   textAlign: TextAlign.justify,
                   style: TextStyle(
                     fontSize: 18.0,
@@ -109,29 +111,27 @@ class _NewsDetailState extends State<NewsDetail> {
               SizedBox(
                 height: 1.5,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    (check == 0)
-                        ? y.dateNews
-                        : (check == 1) ? x.publishedAt : 'No Date',
-                    // _ifElse(x, y, x.publishedAt, y.dateNews, 'No Date'),
-                    style: TextStyle(
-                      color: ColorApp().primaryColor,
-                      fontSize: 12.0,
-                    ),
-                  ),
-                  Text(
-                    // 'Author : ${_ifElse(x, y, x.author, y.username, 'No Author')}',
-                    'Author : ${(check == 0) ? y.username : (check == 1) ? x.author : 'No Author'}',
+              Text(
+                (check == 0)
+                    ? y.dateNews
+                    : (check == 1) ? x.publishedAt ?? 'No Date' : 'No Date',
+                // _ifElse(x, y, x.publishedAt, y.dateNews, 'No Date'),
+                style: TextStyle(
+                  color: ColorApp().primaryColor,
+                  fontSize: 12.0,
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  // 'Author : ${_ifElse(x, y, x.author, y.username, 'No Author')}',
+                  'Author : ${(check == 0) ? y.username : (check == 1) ? x.author ?? 'No Author' : 'No Author'}',
 
-                    style: TextStyle(
-                      color: ColorApp().primaryColor,
-                      fontSize: 12.0,
-                    ),
-                  )
-                ],
+                  style: TextStyle(
+                    color: ColorApp().primaryColor,
+                    fontSize: 12.0,
+                  ),
+                ),
               ),
               SizedBox(
                 height: 7.0,
@@ -139,7 +139,7 @@ class _NewsDetailState extends State<NewsDetail> {
               Text(
                 (check == 0)
                     ? y.content
-                    : (check == 1) ? x.content : 'No Content',
+                    : (check == 1) ? x.content ?? 'No Content' : 'No Content',
                 // _ifElse(x, y, x.content, y.content, 'No Content'),
                 textAlign: TextAlign.justify,
               ),
@@ -154,11 +154,11 @@ class _NewsDetailState extends State<NewsDetail> {
               (check == 1)
                   ? GestureDetector(
                       child: Text(
-                        (x.url != null) ? x.url : 'No Url',
+                        (x.url != null) ? x.url ?? 'No Url' : 'No Url',
                         // _ifElse(x, y, x.url, '', 'No Url'),
                         style: TextStyle(color: Colors.cyan),
                       ),
-                      onTap: () => _launchURL(x.url),
+                      onTap: () => _launchURL(x.url ?? ''),
                     )
                   : Container(),
             ],

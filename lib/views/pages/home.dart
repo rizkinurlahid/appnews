@@ -86,7 +86,7 @@ class _HomeState extends State<Home> {
       return list2.dateNews.toString().compareTo(list1.dateNews.toString());
     }); //ascending
     return ListView(
-      physics: BouncingScrollPhysics(),
+      // physics: BouncingScrollPhysics(),
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -124,7 +124,7 @@ class _HomeState extends State<Home> {
                         child: Image.network(
                           BaseUrl().insertNews + x.image,
                           fit: BoxFit.fill,
-                          width: 400,
+                          width: width,
                           height: 300,
                           colorBlendMode: BlendMode.darken,
                           color: Colors.black54,
@@ -133,7 +133,7 @@ class _HomeState extends State<Home> {
                               ImageChunkEvent loadingProgress) {
                             if (loadingProgress == null) return child;
                             return Container(
-                              width: 400,
+                              width: width,
                               height: 300,
                               child: Center(
                                 child: CircularProgressIndicator(
@@ -205,16 +205,14 @@ class _HomeState extends State<Home> {
                     ListTile(
                       leading: Image.network(
                         BaseUrl().insertNews + x.image,
-                        width: 100.0,
-                        height: 100.0,
+                        width: width / 4,
                         fit: BoxFit.fill,
                         filterQuality: FilterQuality.low,
                         loadingBuilder: (BuildContext context, Widget child,
                             ImageChunkEvent loadingProgress) {
                           if (loadingProgress == null) return child;
                           return Container(
-                            width: 100.0,
-                            height: 100.0,
+                            width: width / 4,
                             child: Center(
                               child: CircularProgressIndicator(
                                 value: loadingProgress.expectedTotalBytes !=

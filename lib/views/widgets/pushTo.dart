@@ -23,8 +23,11 @@ class PushTo extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => to));
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => to),
+              (Route<dynamic> route) => false,
+            );
           },
           child: Text(
             text2,

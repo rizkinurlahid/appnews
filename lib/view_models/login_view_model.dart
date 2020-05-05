@@ -59,27 +59,32 @@ class LoginViewModel extends BaseViewModel {
       "email": email,
       "password": password,
     });
-    final data = jsonDecode(response.body);
-    int value = data['value'];
-    String pesan = data['message'];
-    String usernameAPI = data['username'];
-    String emailAPI = data['email'];
-    String idUsers = data['id_users'];
-    if (value == 1) {
-      // _loginStatus = LoginStatus.signIn;
-      savePref(value, usernameAPI, emailAPI, idUsers);
-      print(pesan);
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => MainMenu()),
-        (Route<dynamic> route) => false,
-      );
-      _loading = 0;
-    } else {
-      print(pesan);
-      pesanLogin = value;
-      timer();
-      _loading = 0;
+    print(response);
+    print(response.contentLength);
+    print(response.statusCode);
+    if (response.statusCode != 404) if (response.contentLength != 2) {
+      final data = jsonDecode(response.body);
+      int value = data['value'];
+      String pesan = data['message'];
+      String usernameAPI = data['username'];
+      String emailAPI = data['email'];
+      String idUsers = data['id_users'];
+      if (value == 1) {
+        // _loginStatus = LoginStatus.signIn;
+        savePref(value, usernameAPI, emailAPI, idUsers);
+        print(pesan);
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => MainMenu()),
+          (Route<dynamic> route) => false,
+        );
+        _loading = 0;
+      } else {
+        print(pesan);
+        pesanLogin = value;
+        timer();
+        _loading = 0;
+      }
     }
     notifyListeners();
   }

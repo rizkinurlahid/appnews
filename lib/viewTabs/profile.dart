@@ -30,47 +30,48 @@ class _ProfileState extends State<Profile> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: ColorApp().bgColor,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 33.0),
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              CircleAvatar(
-                backgroundColor: ColorApp().primaryColor,
-                radius: 50,
-                child: Icon(
-                  Ionicons.md_person,
-                  size: 50.0,
-                  color: ColorApp().lightPrimaryColor,
-                ),
-              ),
-              Container(
-                width: width / 1.5,
-                child: ListTile(
-                  leading: Icon(
-                    Ionicons.md_person,
-                    size: 30,
-                    color: ColorApp().primaryColor,
-                  ),
-                  title: Text("Username : "),
-                  subtitle: Text(username ?? 'null'),
-                ),
-              ),
-              Container(
-                width: width / 1.5,
-                child: ListTile(
-                  leading: Icon(
-                    Icons.email,
-                    size: 30,
-                    color: ColorApp().primaryColor,
-                  ),
-                  title: Text("Email : "),
-                  subtitle: Text(email ?? 'null'),
-                ),
-              ),
-            ],
+      body: ListView(
+        shrinkWrap: true,
+        padding: EdgeInsets.fromLTRB(
+            50.0,
+            MediaQuery.of(context).size.height / 5,
+            50.0,
+            MediaQuery.of(context).size.height / 5),
+        children: <Widget>[
+          CircleAvatar(
+            backgroundColor: ColorApp().primaryColor,
+            radius: 50,
+            child: Icon(
+              Ionicons.md_person,
+              size: 50.0,
+              color: ColorApp().lightPrimaryColor,
+            ),
           ),
-        ),
+          Container(
+            width: width / 1.5,
+            child: ListTile(
+              leading: Icon(
+                Ionicons.md_person,
+                size: 30,
+                color: ColorApp().primaryColor,
+              ),
+              title: Text("Username : "),
+              subtitle: Text(username ?? 'null'),
+            ),
+          ),
+          Container(
+            width: width / 1.5,
+            child: ListTile(
+              leading: Icon(
+                Icons.email,
+                size: 30,
+                color: ColorApp().primaryColor,
+              ),
+              title: Text("Email : "),
+              subtitle: Text(email ?? 'null'),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -96,6 +96,7 @@ class _NewsState extends State<News> {
   }
 
   ListView buildNews(NewsViewModel model, nilai) {
+    final width = MediaQuery.of(context).size.width;
     model.list.sort((list1, list2) {
       return list2.dateNews.toString().compareTo(list1.dateNews.toString());
     }); //ascending
@@ -135,17 +136,15 @@ class _NewsState extends State<News> {
                             ),
                             child: Image.network(
                               BaseUrl().insertNews + x.image,
-                              width: 100.0,
-                              height: 100.0,
-                              fit: BoxFit.cover,
+                              width: width / 4,
+                              fit: BoxFit.fill,
                               filterQuality: FilterQuality.low,
                               loadingBuilder: (BuildContext context,
                                   Widget child,
                                   ImageChunkEvent loadingProgress) {
                                 if (loadingProgress == null) return child;
                                 return Container(
-                                  width: 100.0,
-                                  height: 100.0,
+                                  width: width / 4,
                                   child: Center(
                                     child: CircularProgressIndicator(
                                       value: loadingProgress
@@ -196,36 +195,42 @@ class _NewsState extends State<News> {
                                   fontSize: 12.0,
                                 ),
                               ),
-                              InkWell(
-                                child: Icon(
-                                  FontAwesome5.edit,
-                                  color: Colors.lightBlue[300],
-                                ),
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => EditNews(
-                                        model: x,
-                                        reload: () => model.lihatData,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              (nilai == 1 || nilai == 2)
-                                  ? InkWell(
+                              Row(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0),
+                                    child: InkWell(
                                       child: Icon(
-                                        FontAwesome5.trash_alt,
-                                        color: Colors.red[300],
+                                        FontAwesome5.edit,
+                                        color: Colors.lightBlue[300],
                                       ),
                                       onTap: () {
-                                        _onAlertButtonPressed(
-                                            context,
-                                            () => model.delete(
-                                                x.id_news, context));
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => EditNews(
+                                              model: x,
+                                              reload: () => model.lihatData,
+                                            ),
+                                          ),
+                                        );
                                       },
-                                    )
-                                  : null,
+                                    ),
+                                  ),
+                                  InkWell(
+                                    child: Icon(
+                                      FontAwesome5.trash_alt,
+                                      color: Colors.red[300],
+                                    ),
+                                    onTap: () {
+                                      _onAlertButtonPressed(
+                                          context,
+                                          () =>
+                                              model.delete(x.id_news, context));
+                                    },
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),

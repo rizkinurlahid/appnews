@@ -99,16 +99,14 @@ class _SportState extends State<Sport> {
                 leading: (article.urlToImage != null)
                     ? Image.network(
                         article.urlToImage,
-                        width: 100.0,
-                        height: 100.0,
+                        width: width / 4,
                         fit: BoxFit.fill,
                         filterQuality: FilterQuality.low,
                         loadingBuilder: (BuildContext context, Widget child,
                             ImageChunkEvent loadingProgress) {
                           if (loadingProgress == null) return child;
                           return Container(
-                            width: 100.0,
-                            height: 100.0,
+                            width: width / 4,
                             child: Center(
                               child: CircularProgressIndicator(
                                 value: loadingProgress.expectedTotalBytes !=

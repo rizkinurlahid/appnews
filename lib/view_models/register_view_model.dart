@@ -53,20 +53,23 @@ class RegisterViewModel extends BaseViewModel {
       "email": email,
       "password": password,
     });
-    final data = jsonDecode(response.body);
-    int value = data['value'];
-    String pesan = data['message'];
-    if (value == 1) {
-      login(context);
-      _loading = 0;
-    } else {
-      _loading = 0;
-      print(value);
-      print(pesan);
+    if (response.statusCode != 404) {
+      final data = jsonDecode(response.body);
+      int value = data['value'];
+      String pesan = data['message'];
+      if (value == 1) {
+        login(context);
+        _loading = 0;
+      } else {
+        _loading = 0;
+        print(value);
+        print(pesan);
 
-      pesanRegister = value;
-      timer();
+        pesanRegister = value;
+        timer();
+      }
     }
+
     notifyListeners();
   }
 

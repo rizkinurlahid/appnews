@@ -17,8 +17,7 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
 
     final response = await http.get(BaseUrl().detailNews);
-    if (response.statusCode != 404) if (response.contentLength == 2) {
-    } else {
+    if (response.statusCode != 404 && response.contentLength != 2) {
       final data = jsonDecode(response.body);
       data.forEach((api) {
         final ab = new NewsModel(
