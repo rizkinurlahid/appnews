@@ -2,7 +2,6 @@ import 'package:app_news/utils/color.dart';
 import 'package:app_news/views/pages/login.dart';
 import 'package:app_news/views/pages/mainMenu.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
